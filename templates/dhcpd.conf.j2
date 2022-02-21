@@ -1,0 +1,109 @@
+#
+# {{ ansible_managed }}
+#
+
+# If this DHCP server is the official DHCP server for the local
+# network, the authoritative directive should be uncommented.
+authoritative;
+
+# The style parameter must be one of ad-hoc, interim or none. The
+# ddns-update-style statement is only meaningful in the outer scope - it
+# is evaluated once after reading the dhcpd.conf file, rather than each
+# time a client is assigned an IP address, so there is no way to use
+# different DNS update styles for different clients. The default is
+# nonrent DNS update styles for different clients. The default is none.
+ddns-update-style interim;
+
+# The first point to understand about this style of DNS update is that
+# unlike the ad-hoc style, the DHCP server does not necessarily always
+# update both the A and the PTR records. The FQDN option includes a flag
+# which, when sent by the client, indicates that the client wishes to
+# update its own A record. In that case, the server can be configured
+# either to honor the client’s intentions or ignore them. This is
+# done with the statement allow client-updates; or the statement ignore
+# client-updates;. By default, client updates are allowed.
+ignore client-updates;
+
+{% for key in dhcpd_keys %}
+key "{{ key.name }}" {
+  algorithm {{ key.algorithm }};
+  secret "{{ key.secret }}";
+}
+{% endfor %}
+
+{% for zone in dhcpd_zones %}
+zone {{ zone.name }} {
+  primary {{ zone.primary }};
+  key "{{ zone.key }}";
+}
+{% endfor %}
+
+{% for subnet in dhcpd_subnets %}
+subnet {{ subnet.network_start }} netmask {{ subnet.network_netmask }} {
+  interface {{ subnet.interface }};
+
+  range {{ subnet.network_range }};
+
+  # Time should be the length in seconds that will be assigned to a
+  # lease if the client requesting the lease does not ask for a specific
+  # expiration time. This is used for both DHCPv4 and DHCPv6 leases (it
+  # is also known as the "valid lifetime" in DHCPv6).
+  default-lease-time {{ subnet.default_lease_time }};
+
+  # Time should be the maximum length in seconds that will be assigned
+  # to a lease. If not defined, the default maximum lease time is 86400.
+  # The only exception to this is that Dynamic BOOTP lease lengths,
+  # which are not specified by the client, are not limited by this
+  # maximum.
+  max-lease-time {{ subnet.max_lease_time }};
+
+  # Time should be the minimum length in seconds that will be assigned
+  # to a lease. The default is the minimum of 300 seconds or
+  # max-lease-time.
+  min-lease-time {{ subnet.min_lease_time }};
+
+  # The name parameter should be the domain name that will be appended
+  # to the client's hostname to form a fully-qualified domain-name
+  # (FQDN).
+  ddns-domainname "{{ subnet.ddns_domainname }}";
+
+  # The update-static-leases flag, if enabled, causes the DHCP server to
+  # do DNS updates for clients even if those clients are being assigned
+  # their IP address using a fixed-address statement - that is, the
+  # client is being given a static assignment. This can only work with
+  # the interim DNS update scheme. It is not recommended because the
+  # DHCP server has no way to tell that the update has been done, and
+  # therefore will not delete the record when it is not in use. Also,
+  # the server must attempt the update each time the client renews its
+  # lease, which could have a significant performance impact in
+  # environments that place heavy demands on the DHCP server.
+  update-static-leases on;
+
+  option broadcast-address {{ subnet.option_broadcast_address }};
+  # option domain-name "{{ subnet.option_domain_name }}";
+  option domain-name-servers {{ subnet.option_domain_name_servers }};
+  option routers {{ subnet.option_routers }};
+  option subnet-mask {{ subnet.option_subnet_mask }};
+
+  # PXE-Boot-Settings
+  # allow booting;
+  # allow bootp;
+  # next-server 192.168.179.15;
+  # filename "pxelinux.0";
+}
+{% endfor %}
+
+{% if dhcpd_static_hosts is defined and dhcpd_static_hosts | length > 0 %}
+{% for host in dhcpd_static_hosts %}
+host {{ host.name }} {
+{% if host.ddns_hostname is defined %}
+  ddns-hostname {{ host.ddns_hostname }};
+{% endif %}
+{% if host.fixed_address is defined %}
+  fixed-address {{ host.fixed_address }};
+{% endif %}
+  hardware ethernet {{ host.hardware_ethernet }};
+}
+
+{% endfor %}
+{% endif %}

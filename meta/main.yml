@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Markus Pesch
+  description: Role to install and configure dhcpd on different distributions
+  company: Cryptic Systems
+  license: MIT
+  min_ansible_version: 2.1
+  platforms:
+  - name: Archlinux
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - 20.04
+  - name: RockyLinux
+    versions:
+    - 8.5
+
+  galaxy_tags:
+  - dhcpd
+  - dyndns
+
+dependencies: []

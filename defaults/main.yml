@@ -1,0 +1,35 @@
+---
+
+dhcpd_keys: []
+# - name: dyndns
+#   algorithm: hmac-sha512
+#   secret: secret-of-tsig-key
+
+dhcpd_static_hosts: []
+# - name: "my-host"
+#   hardware_ethernet: "ac:e4:b5:a5:4f:e4"
+#   ddns_hostname: "my-host"
+#   fixed_address: "111.222.111.222"
+
+dhcpd_subnets: []
+# - interface: "enp7s0"
+#   network_start: "192.168.181.0"
+#   network_netmask: "255.255.255.0"
+#   network_range: "192.168.181.20 192.168.181.200"
+#   default_lease_time: "43200"
+#   max_lease_time: "2168640000"
+#   min_lease_time: "21600"
+#   ddns_domainname: "example.com"
+#   option_broadcast_address: "192.168.181.255"
+#   option_domain_name: "example.com"
+#   option_domain_name_servers: "192.168.181.1"
+#   option_routers: "192.168.181.1"
+#   option_subnet_mask: "255.255.255.0"
+
+dhcpd_zones: []
+# - name: example.com
+#   primary: 192.168.181.1
+#   key: dyndns
+# - name: 181.168.192.in-addr.arpa
+#   primary: 192.168.181.1
+#   key: dyndns

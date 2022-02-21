@@ -1,0 +1,13 @@
+---
+
+dhcpd_main_config: /etc/dhcp/dhcpd.conf
+
+dhcpd_cache_directory: /var/lib/dhcp
+
+dhcpd_package_names:
+- dhcp-server
+
+dhcpd_service_name: dhcpd
+
+dhcpd_unix_user: dhcpd
+dhcpd_unix_group: dhcpd
