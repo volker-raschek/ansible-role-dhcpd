@@ -24,7 +24,7 @@ ddns-update-style interim;
 # client-updates;. By default, client updates are allowed.
 ignore client-updates;
 
-{% for key in dhcpd_keys %}
+{% for key in dhcpd_tsigkeys %}
 key "{{ key.name }}" {
   algorithm {{ key.algorithm }};
   secret "{{ key.secret }}";

@@ -1,6 +1,6 @@
 ---
 
-dhcpd_keys: []
+dhcpd_tsigkeys: []
 # - name: dyndns
 #   algorithm: hmac-sha512
 #   secret: secret-of-tsig-key
