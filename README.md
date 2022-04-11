@@ -5,6 +5,12 @@
 
 With following role can be dhcpd installed and configured.
 
+## Installation
+
+```bash
+ansible-galaxy install volker_raschek.dhcpd
+```
+
 ## Supported distributions
 
 - Arch Linux
