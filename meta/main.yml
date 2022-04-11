@@ -1,19 +1,20 @@
 galaxy_info:
+  role_name: dhcpd
   author: Markus Pesch
   description: Role to install and configure dhcpd on different distributions
   company: Cryptic Systems
   license: MIT
-  min_ansible_version: 2.1
+  min_ansible_version: "2.9"
   platforms:
-  - name: Archlinux
+  - name: ArchLinux
     versions:
     - all
   - name: Ubuntu
     versions:
-    - 20.04
-  - name: RockyLinux
+    - all
+  - name: EL
     versions:
-    - 8.5
+    - all
 
   galaxy_tags:
   - dhcpd
