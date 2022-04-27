@@ -1,7 +1,7 @@
 # dhcpd
 
 [![Build Status](https://drone.cryptic.systems/api/badges/volker.raschek/dhcpd-role/status.svg)](https://drone.cryptic.systems/volker.raschek/dhcpd-role)
-[![Ansible Role](https://img.shields.io/ansible/role/d/58170)](https://galaxy.ansible.com/volker_raschek/dhcpd_role)
+[![Ansible Role](https://img.shields.io/ansible/role/d/58170)](https://galaxy.ansible.com/volker_raschek/dhcpd)
 
 With following role can be dhcpd installed and configured.
 
