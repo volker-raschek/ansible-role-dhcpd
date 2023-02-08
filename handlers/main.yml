@@ -1,7 +1,7 @@
 ---
 
 - name: restart dhcpd
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ dhcpd_service_name }}"
     state: restarted
     daemon_reload: true
