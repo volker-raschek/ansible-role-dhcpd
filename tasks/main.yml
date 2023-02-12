@@ -1,22 +1,22 @@
 ---
 
-- name: check if at least one subnet is defined
+- name: Check if at least one subnet is defined
   ansible.builtin.assert:
     that:
     - dhcpd_subnets | length > 0
     fail_msg: "No subnet defined"
 
 - name: Include OS-specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
-- name: install dhcpd with dependencies
+- name: Install dhcpd with dependencies
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
   - "{{ dhcpd_package_names }}"
 
-- name: create dhcpd config
+- name: Create dhcpd config
   ansible.builtin.template:
     src: "dhcpd.conf.j2"
     dest: "{{ dhcpd_main_config }}"
@@ -24,25 +24,26 @@
     group: "{{ dhcpd_unix_group }}"
     mode: 0644
 
-- name: cleanup cache files
+- name: Cleanup cache files
+  notify: Restart dhcpd
   block:
-  - name: check if cache dir exists
-    stat:
+  - name: Check if cache dir exists
+    ansible.builtin.stat:
       path: "{{ dhcpd_cache_directory }}"
     register: cache_stats
-  - name: remove cache dir
+  - name: Remove cache dir
     ansible.builtin.file:
       path: "{{ dhcpd_cache_directory }}"
       state: absent
     when: cache_stats.stat.exists
-  - name: create cache dir
+  - name: Create cache dir
     ansible.builtin.file:
       path: "{{ dhcpd_cache_directory }}"
       owner: "{{ dhcpd_unix_user }}"
       group: "{{ dhcpd_unix_group }}"
       mode: 0755
       state: directory
-  - name: create cache files
+  - name: Create cache files
     ansible.builtin.file:
       path: "{{ dhcpd_cache_directory }}/{{ item }}"
       owner: "{{ dhcpd_unix_user }}"
@@ -51,9 +52,8 @@
       state: touch
     with_items:
     - dhcpd.leases
-    notify: restart dhcpd
 
-- name: start and enable dhcpd
+- name: Start and enable dhcpd
   ansible.builtin.systemd:
     name: "{{ item }}"
     state: started
