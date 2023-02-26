@@ -22,7 +22,7 @@
     dest: "{{ dhcpd_main_config }}"
     owner: "{{ dhcpd_unix_user }}"
     group: "{{ dhcpd_unix_group }}"
-    mode: 0644
+    mode: "0644"
 
 - name: Cleanup cache files
   notify: Restart dhcpd
@@ -41,14 +41,14 @@
       path: "{{ dhcpd_cache_directory }}"
       owner: "{{ dhcpd_unix_user }}"
       group: "{{ dhcpd_unix_group }}"
-      mode: 0755
+      mode: "0755"
       state: directory
   - name: Create cache files
     ansible.builtin.file:
       path: "{{ dhcpd_cache_directory }}/{{ item }}"
       owner: "{{ dhcpd_unix_user }}"
       group: "{{ dhcpd_unix_group }}"
-      mode: 0644
+      mode: "0644"
       state: touch
     with_items:
     - dhcpd.leases
