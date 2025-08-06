@@ -1,5 +1,4 @@
 galaxy_info:
-  namespace: volker_raschek
   role_name: dhcpd
   author: Markus Pesch
   description: Role to install and configure dhcpd on different distributions
