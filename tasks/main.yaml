@@ -7,7 +7,7 @@
     fail_msg: "No subnet defined"
 
 - name: Include OS-specific variables
-  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yaml"
 
 - name: Install dhcpd with dependencies
   ansible.builtin.package:
